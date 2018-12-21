@@ -1,0 +1,27 @@
+/*
+ * a tool that finds dynamic symbol conflicts at runtime
+ *
+ * how to use this?
+ * compile this with:
+ *  gcc dlconflict.c -shared -o dlconflict.so
+ *
+ * then whenever you want to test for symbol conflict 
+ * (ideally after all other libraries are loaded, this happens before main)
+ * you just need to load 'dlconflict.so' using dlopen
+ * the rest is handled by a constructor function that runs on loading the library
+ * a dump of the results will be printed on stderr
+ * you might need to filter this again to ignore libc (it's a mess)
+ *
+ * #include <dlfcn.h>
+ * int main(void)
+ * {
+ *      void *h = dlopen("path_to/dlconflict.so", RTLD_LAZY);
+ *      if (!h){
+ *          fprintf(stderr, "failed to load dlconflict.so");
+ *      }
+ * }
+ *
+ *
+ * author: github/nilputs
+ * license: GPL v3
+ */
